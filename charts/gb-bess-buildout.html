@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GB Grid-Scale BESS Buildout</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.0/plotly.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FFFFFF;
+      color: #333333;
+    }
+    .chart-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 24px 24px 16px 24px;
+    }
+    .chart-header { margin-bottom: 2px; }
+    .chart-header h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 21px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: #333333;
+      margin: 0;
+    }
+    .chart-header h1 b { font-weight: 700; }
+    .chart-subheader {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #4a4a4a;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+    #chart { flex: 1; min-height: 0; width: 100%; }
+    .chart-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 10px;
+      gap: 16px;
+    }
+    .chart-footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    .chart-source {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #AAAAAA;
+      line-height: 1.4;
+    }
+    .chart-wordmark {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #333333;
+      letter-spacing: 0.25em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-wrapper">
+    <div class="chart-header">
+      <h1>GB grid-scale BESS reaches <b>22 GW</b> by 2035, led by <b>2h</b> and <b>4h</b> duration growth</h1>
+      <div class="chart-subheader">Installed capacity by duration (GW)</div>
+    </div>
+
+    <div id="chart"></div>
+
+    <div class="chart-footer">
+      <div class="chart-footer-left">
+        <div class="chart-source">Source: Modo Energy</div>
+      </div>
+      <div class="chart-wordmark">MODOENERGY</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA =====
+    const years = ['2026','2027','2028','2029','2030','2031','2032','2033','2034','2035'];
+
+    const totals = [6.8, 8.2, 9.9, 11.5, 13.5, 15.4, 17.4, 19.1, 20.7, 22.0];
+
+    const data = [
+      {
+        name: '1h',
+        type: 'bar',
+        x: years,
+        y: [2.1, 2.3, 2.5, 2.6, 2.8, 2.9, 3.0, 3.1, 3.2, 3.3],
+        marker: { color: '#FFB347', line: { width: 0 } },
+        hovertemplate: '%{y:.1f} GW<extra>1h</extra>',
+      },
+      {
+        name: '2h',
+        type: 'bar',
+        x: years,
+        y: [3.2, 3.8, 4.5, 5.1, 5.8, 6.4, 7.0, 7.5, 8.0, 8.4],
+        marker: { color: '#6F5FE5', line: { width: 0 } },
+        hovertemplate: '%{y:.1f} GW<extra>2h</extra>',
+      },
+      {
+        name: '4h',
+        type: 'bar',
+        x: years,
+        y: [1.2, 1.6, 2.1, 2.7, 3.4, 4.1, 4.8, 5.4, 5.9, 6.3],
+        marker: { color: '#00D4AA', line: { width: 0 } },
+        hovertemplate: '%{y:.1f} GW<extra>4h</extra>',
+      },
+      {
+        name: '6h+',
+        type: 'bar',
+        x: years,
+        y: [0.3, 0.5, 0.8, 1.1, 1.5, 2.0, 2.6, 3.1, 3.6, 4.0],
+        marker: { color: '#45B7D1', line: { width: 0 } },
+        text: totals.map(v => v.toFixed(1)),
+        textposition: 'outside',
+        textfont: { size: 11, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        cliponaxis: false,
+        hovertemplate: '%{y:.1f} GW<extra>6h+</extra>',
+      },
+    ];
+
+    // ===== LAYOUT =====
+    const layout = {
+      font: {
+        family: '"DM Sans", sans-serif',
+        color: '#4a4a4a',
+        size: 12,
+      },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { t: 10, r: 20, b: 40, l: 0, pad: 0 },
+      title: null,
+      barmode: 'stack',
+      bargap: 0.3,
+      xaxis: {
+        showgrid: false,
+        showline: false,
+        tickfont: { size: 12, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        tickcolor: 'rgba(0,0,0,0)',
+        automargin: true,
+      },
+      yaxis: {
+        showgrid: true,
+        gridcolor: '#E8E8E8',
+        gridwidth: 1,
+        showline: false,
+        tickfont: { size: 12, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        tickcolor: 'rgba(0,0,0,0)',
+        zeroline: true,
+        zerolinecolor: '#D0D0D0',
+        zerolinewidth: 1,
+        automargin: true,
+        title: { text: 'GW', font: { size: 12, color: '#4a4a4a' } },
+        range: [0, 26],
+      },
+      legend: {
+        orientation: 'h',
+        yanchor: 'bottom',
+        y: 1.02,
+        xanchor: 'left',
+        x: 0,
+        font: { size: 13, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        bgcolor: 'rgba(255,255,255,0)',
+        borderwidth: 0,
+        itemsizing: 'constant',
+        traceorder: 'normal',
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: '#333333',
+        font: { family: '"DM Sans", sans-serif', size: 13, color: '#FFFFFF' },
+        bordercolor: '#333333',
+      },
+    };
+
+    // ===== RENDER =====
+    Plotly.newPlot('chart', data, layout, {
+      responsive: true,
+      displayModeBar: false,
+      staticPlot: false,
+    });
+
+    window.addEventListener('resize', () => {
+      Plotly.Plots.resize('chart');
+    });
+  </script>
+</body>
+</html>

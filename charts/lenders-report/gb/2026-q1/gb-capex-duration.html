@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GB BESS Capex by Duration</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.0/plotly.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FFFFFF;
+      color: #333333;
+    }
+    .chart-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 24px 24px 16px 24px;
+    }
+    .chart-header { margin-bottom: 2px; }
+    .chart-header h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 21px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: #333333;
+      margin: 0;
+    }
+    .chart-header h1 b { font-weight: 700; }
+    .chart-subheader {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #4a4a4a;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+    #chart { flex: 1; min-height: 0; width: 100%; }
+    .chart-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 10px;
+      gap: 16px;
+    }
+    .chart-footer-left { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+    .chart-source {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #AAAAAA;
+      line-height: 1.4;
+    }
+    .chart-wordmark {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #333333;
+      letter-spacing: 0.25em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart-wrapper">
+    <div class="chart-header">
+      <h1>BESS capex falls <b>30%</b> by 2032, improving project economics across all durations</h1>
+      <div class="chart-subheader">BESS installed cost by duration (£k/MW)</div>
+    </div>
+
+    <div id="chart"></div>
+
+    <div class="chart-footer">
+      <div class="chart-footer-left">
+        <div class="chart-source">Source: Modo Energy, BloombergNEF</div>
+      </div>
+      <div class="chart-wordmark">MODOENERGY</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA =====
+    const years = ['2026','2028','2030','2032','2034'];
+
+    const data = [
+      {
+        name: '1h',
+        type: 'bar',
+        x: years,
+        y: [400, 370, 340, 310, 285],
+        marker: { color: '#f7c191', line: { width: 0 } },
+        hovertemplate: '£%{y}k/MW<extra>1h</extra>',
+      },
+      {
+        name: '2h',
+        type: 'bar',
+        x: years,
+        y: [550, 510, 470, 430, 395],
+        marker: { color: '#467ee4', line: { width: 0 } },
+        hovertemplate: '£%{y}k/MW<extra>2h</extra>',
+      },
+      {
+        name: '4h',
+        type: 'bar',
+        x: years,
+        y: [850, 790, 720, 660, 605],
+        marker: { color: '#27ac60', line: { width: 0 } },
+        hovertemplate: '£%{y}k/MW<extra>4h</extra>',
+      },
+    ];
+
+    // ===== LAYOUT =====
+    const layout = {
+      font: { family: '"DM Sans", sans-serif', color: '#4a4a4a', size: 12 },
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { t: 10, r: 20, b: 40, l: 0, pad: 0 },
+      title: null,
+      barmode: 'group',
+      bargap: 0.25,
+      bargroupgap: 0.1,
+      xaxis: {
+        showgrid: false,
+        showline: false,
+        tickfont: { size: 12, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        tickcolor: 'rgba(0,0,0,0)',
+        automargin: true,
+      },
+      yaxis: {
+        showgrid: true,
+        gridcolor: '#E8E8E8',
+        gridwidth: 1,
+        showline: false,
+        tickfont: { size: 12, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        tickcolor: 'rgba(0,0,0,0)',
+        zeroline: true,
+        zerolinecolor: '#D0D0D0',
+        zerolinewidth: 1,
+        automargin: true,
+        title: { text: '£k/MW', font: { size: 12, color: '#4a4a4a' } },
+      },
+      legend: {
+        orientation: 'h',
+        yanchor: 'bottom',
+        y: 1.02,
+        xanchor: 'left',
+        x: 0,
+        font: { size: 13, color: '#4a4a4a', family: '"DM Sans", sans-serif' },
+        bgcolor: 'rgba(255,255,255,0)',
+        borderwidth: 0,
+        itemsizing: 'constant',
+        traceorder: 'normal',
+      },
+      hovermode: 'x unified',
+      hoverlabel: {
+        bgcolor: '#333333',
+        font: { family: '"DM Sans", sans-serif', size: 13, color: '#FFFFFF' },
+        bordercolor: '#333333',
+      },
+    };
+
+    // ===== RENDER =====
+    Plotly.newPlot('chart', data, layout, {
+      responsive: true,
+      displayModeBar: false,
+      staticPlot: false,
+    });
+
+    window.addEventListener('resize', () => { Plotly.Plots.resize('chart'); });
+  </script>
+</body>
+</html>

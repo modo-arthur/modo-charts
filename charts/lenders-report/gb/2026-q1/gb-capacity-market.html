@@ -1,39 +1,929 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Capacity Market</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-<style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #FFFFFF;
-      color: #333333;
-    }
-    .chart-wrapper {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      padding: 24px 24px 16px 24px;
-    }
-    #chart { flex: 1; min-height: 0; width: 100%; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacity Market</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #chart {
+            width: 100%;
+            height: 500px;
+        }
+        .modo-branding {
+            text-align: center;
+            padding: 10px;
+            color: #666;
+            font-size: 12px;
+        }
+        .modo-branding a {
+            color: #6F5FE5;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="chart-wrapper">
-    <div id="chart"></div>
-  </div>
-  <script>
-    var chart = echarts.init(document.getElementById('chart'));
-    chart.setOption({"tooltip": {"backgroundColor": "rgba(255, 255, 255, 0.95)", "borderColor": "#E5E5E5", "borderWidth": 1, "textStyle": {"color": "#03152C"}, "trigger": "axis", "confine": true}, "legend": {"left": "center", "bottom": "2%", "itemWidth": 20, "itemHeight": 3, "textStyle": {"color": "#03152C", "fontSize": 10}, "itemGap": 14, "data": [{"name": "1h contract value", "icon": "rect"}, {"name": "2h contract value", "icon": "rect"}, {"name": "Clearing price (\u00a3/kW/yr)", "icon": "rect"}]}, "grid": {"left": "8%", "right": "8%", "top": "8%", "bottom": "10%", "containLabel": true}, "xAxis": {"type": "category", "data": ["2018/19", "2019/20", "2020/21", "2021/22", "2022/23", "2023/24", "2024/25", "2025/26", "2026/27", "2027/28", "2028/29", "2029/30", "2030/31", "2031/32", "2032/33", "2033/34", "2034/35", "2035/36", "2036/37", "2037/38", "2038/39", "2039/40", "2040/41", "2041/42", "2042/43", "2043/44", "2044/45", "2045/46", "2046/47", "2047/48", "2048/49", "2049/50", "2050/51", "2051/52", "2052/53", "2053/54", "2054/55", "2055/56", "2056/57", "2057/58", "2058/59", "2059/60"], "axisTick": {"alignWithLabel": true}, "axisLabel": {"interval": 4, "rotate": 45, "fontSize": 9}}, "yAxis": [{"type": "value", "name": "\u00a3k/MW/year (contract value)", "min": 0, "splitLine": {"lineStyle": {"type": "dashed", "color": "#E5E5E5"}}}, {"type": "value", "name": "\u00a3/kW/year (clearing price)", "min": 0, "splitLine": {"show": false}}], "series": [{"name": "1h contract value", "type": "bar", "barWidth": "35%", "itemStyle": {"color": "#00D4AA"}, "data": [{"value": 18.9, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 17.4, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 21.7, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 8.1, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 1.9, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 3.3, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 4.5, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 6.1, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 7.4, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 5.0, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 6.3, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 3.0, "itemStyle": {"color": "#00D4AA", "opacity": 1.0}}, {"value": 4.8, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 4.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 4.1, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 3.8, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 3.5, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 3.1, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 2.9, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 2.6, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 2.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 2.0, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.8, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.6, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.5, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 1.2, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.6, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.6, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.5, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.5, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}, {"value": 0.4, "itemStyle": {"color": "#00D4AA", "opacity": 0.35}}]}, {"name": "2h contract value", "type": "bar", "barWidth": "35%", "itemStyle": {"color": "#6F5FE5"}, "data": [{"value": 18.9, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 17.4, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 21.7, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 8.1, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 3.6, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 6.5, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 8.8, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 12.2, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 14.9, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 10.0, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 12.6, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 6.0, "itemStyle": {"color": "#6F5FE5", "opacity": 1.0}}, {"value": 9.6, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 8.8, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 8.3, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 7.5, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 6.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 6.3, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 5.7, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 5.2, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 4.8, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 2.8, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 4.0, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 3.6, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 3.3, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 3.0, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 2.7, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 2.5, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 1.2, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 1.1, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 1.0, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}, {"value": 0.9, "itemStyle": {"color": "#6F5FE5", "opacity": 0.35}}]}, {"name": "Clearing price (\u00a3/kW/yr)", "type": "line", "yAxisIndex": 1, "smooth": false, "symbol": "none", "lineStyle": {"width": 2, "color": "#FF6B6B"}, "itemStyle": {"color": "#FF6B6B"}, "data": [19.4, 18.0, 22.5, 8.4, 6.4, 16.0, 18.0, 30.6, 63.0, 65.0, 60.0, 27.1, 50.4, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]}, {"name": "Clearing price (forecast)", "type": "line", "yAxisIndex": 1, "smooth": false, "symbol": "none", "lineStyle": {"width": 2, "color": "#FF6B6B", "opacity": 0.35}, "itemStyle": {"color": "#FF6B6B", "opacity": 0.35}, "tooltip": {"show": false}, "data": [null, null, null, null, null, null, null, null, null, null, null, 27.1, 50.4, 47.9, 45.5, 43.2, 41.3, 39.0, 37.1, 35.2, 33.5, 20.6, 30.2, 28.7, 27.2, 25.9, 24.6, 23.4, 11.8, 11.2, 10.7, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2, 10.2]}], "color": ["#6F5FE5", "#00D4AA", "#FF6B6B", "#FFB347", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7", "#DDA0DD", "#98D8C8"], "backgroundColor": "#FFFFFF", "textStyle": {"color": "#03152C", "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"}});
-    window.addEventListener('resize', function() { chart.resize(); });
-  </script>
+    <div class="chart-container">
+        <div id="chart"></div>
+        <div class="modo-branding">
+            Generated by <a href="https://modoenergy.com">Modo Energy</a>
+        </div>
+    </div>
+
+    <script>
+        var chart = echarts.init(document.getElementById('chart'));
+        var option = {
+  "tooltip": {
+    "backgroundColor": "rgba(255, 255, 255, 0.95)",
+    "borderColor": "#E5E5E5",
+    "borderWidth": 1,
+    "textStyle": {
+      "color": "#03152C"
+    },
+    "trigger": "axis",
+    "confine": true
+  },
+  "legend": {
+    "left": "center",
+    "bottom": "2%",
+    "itemWidth": 20,
+    "itemHeight": 3,
+    "textStyle": {
+      "color": "#03152C",
+      "fontSize": 10
+    },
+    "itemGap": 14,
+    "data": [
+      {
+        "name": "1h contract value",
+        "icon": "rect"
+      },
+      {
+        "name": "2h contract value",
+        "icon": "rect"
+      },
+      {
+        "name": "Clearing price (\u00a3/kW/yr)",
+        "icon": "rect"
+      }
+    ]
+  },
+  "grid": {
+    "left": "8%",
+    "right": "8%",
+    "top": "8%",
+    "bottom": "10%",
+    "containLabel": true
+  },
+  "xAxis": {
+    "type": "category",
+    "data": [
+      "2018/19",
+      "2019/20",
+      "2020/21",
+      "2021/22",
+      "2022/23",
+      "2023/24",
+      "2024/25",
+      "2025/26",
+      "2026/27",
+      "2027/28",
+      "2028/29",
+      "2029/30",
+      "2030/31",
+      "2031/32",
+      "2032/33",
+      "2033/34",
+      "2034/35",
+      "2035/36",
+      "2036/37",
+      "2037/38",
+      "2038/39",
+      "2039/40",
+      "2040/41",
+      "2041/42",
+      "2042/43",
+      "2043/44",
+      "2044/45",
+      "2045/46",
+      "2046/47",
+      "2047/48",
+      "2048/49",
+      "2049/50",
+      "2050/51",
+      "2051/52",
+      "2052/53",
+      "2053/54",
+      "2054/55",
+      "2055/56",
+      "2056/57",
+      "2057/58",
+      "2058/59",
+      "2059/60"
+    ],
+    "axisTick": {
+      "alignWithLabel": true
+    },
+    "axisLabel": {
+      "interval": 4,
+      "rotate": 45,
+      "fontSize": 9
+    }
+  },
+  "yAxis": [
+    {
+      "type": "value",
+      "name": "\u00a3k/MW/year (contract value)",
+      "min": 0,
+      "splitLine": {
+        "lineStyle": {
+          "type": "dashed",
+          "color": "#E5E5E5"
+        }
+      }
+    },
+    {
+      "type": "value",
+      "name": "\u00a3/kW/year (clearing price)",
+      "min": 0,
+      "splitLine": {
+        "show": false
+      }
+    }
+  ],
+  "series": [
+    {
+      "name": "1h contract value",
+      "type": "bar",
+      "barWidth": "35%",
+      "itemStyle": {
+        "color": "#00D4AA"
+      },
+      "data": [
+        {
+          "value": 18.9,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 17.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 21.7,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 8.1,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 1.9,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 3.3,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 4.5,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 6.1,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 7.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 5.0,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 6.3,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 3.0,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 4.8,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 4.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 4.1,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.8,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.5,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.1,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.9,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.6,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.0,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.8,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.6,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.5,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.2,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.6,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.6,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.5,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.5,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.4,
+          "itemStyle": {
+            "color": "#00D4AA",
+            "opacity": 0.35
+          }
+        }
+      ]
+    },
+    {
+      "name": "2h contract value",
+      "type": "bar",
+      "barWidth": "35%",
+      "itemStyle": {
+        "color": "#6F5FE5"
+      },
+      "data": [
+        {
+          "value": 18.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 17.4,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 21.7,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 8.1,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 3.6,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 6.5,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 8.8,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 12.2,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 14.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 10.0,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 12.6,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 6.0,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 1.0
+          }
+        },
+        {
+          "value": 9.6,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 8.8,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 8.3,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 7.5,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 6.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 6.3,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 5.7,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 5.2,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 4.8,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.8,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 4.0,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.6,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.3,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 3.0,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.7,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 2.5,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.2,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.1,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 1.0,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        },
+        {
+          "value": 0.9,
+          "itemStyle": {
+            "color": "#6F5FE5",
+            "opacity": 0.35
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clearing price (\u00a3/kW/yr)",
+      "type": "line",
+      "yAxisIndex": 1,
+      "smooth": false,
+      "symbol": "none",
+      "lineStyle": {
+        "width": 2,
+        "color": "#FF6B6B"
+      },
+      "itemStyle": {
+        "color": "#FF6B6B"
+      },
+      "data": [
+        19.4,
+        18.0,
+        22.5,
+        8.4,
+        6.4,
+        16.0,
+        18.0,
+        30.6,
+        63.0,
+        65.0,
+        60.0,
+        27.1,
+        50.4,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "name": "Clearing price (forecast)",
+      "type": "line",
+      "yAxisIndex": 1,
+      "smooth": false,
+      "symbol": "none",
+      "lineStyle": {
+        "width": 2,
+        "color": "#FF6B6B",
+        "opacity": 0.35
+      },
+      "itemStyle": {
+        "color": "#FF6B6B",
+        "opacity": 0.35
+      },
+      "tooltip": {
+        "show": false
+      },
+      "data": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        27.1,
+        50.4,
+        47.9,
+        45.5,
+        43.2,
+        41.3,
+        39.0,
+        37.1,
+        35.2,
+        33.5,
+        20.6,
+        30.2,
+        28.7,
+        27.2,
+        25.9,
+        24.6,
+        23.4,
+        11.8,
+        11.2,
+        10.7,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2,
+        10.2
+      ]
+    }
+  ],
+  "color": [
+    "#6F5FE5",
+    "#00D4AA",
+    "#FF6B6B",
+    "#FFB347",
+    "#4ECDC4",
+    "#45B7D1",
+    "#96CEB4",
+    "#FFEAA7",
+    "#DDA0DD",
+    "#98D8C8"
+  ],
+  "backgroundColor": "#FFFFFF",
+  "textStyle": {
+    "color": "#03152C",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+  }
+};
+        chart.setOption(option);
+
+        // Responsive resize
+        window.addEventListener('resize', function() {
+            chart.resize();
+        });
+    </script>
 </body>
 </html>

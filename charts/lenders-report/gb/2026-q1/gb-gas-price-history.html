@@ -4,45 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Gas Price History</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f5f5f5;
-    padding: 20px;
-}
-.chart-container {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.modo-branding {
-    text-align: center;
-    padding: 10px;
-    color: #666;
-    font-size: 12px;
-}
-.modo-branding a { color: #6F5FE5; text-decoration: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FFFFFF;
+      color: #333333;
+    }
+    .chart-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 24px 24px 16px 24px;
+    }
+    #chart { flex: 1; min-height: 0; width: 100%; }
 
-.chart-container { min-height: 500px; display: flex; flex-direction: column; }
-.inner-wrap { flex: 1; width: 100%; }
+    .btn-row { display:flex; gap:6px; align-items:center; margin-bottom:8px; flex-shrink:0; }
+    #gas-chart { flex:1; width:100%; min-height:0; }
 </style>
 </head>
 <body>
-  <div class="chart-container">
-    <div class="inner-wrap"><div style="display:flex;flex-direction:column;width:100%;height:500px;">
-  <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-shrink:0;">
+<div class="chart-wrapper">
+  <div class="btn-row">
     <button id="btn-ytd" onclick="gasToggle('ytd')"
-      style="font-size:11px;font-weight:600;padding:5px 14px;border:none;border-radius:4px;cursor:pointer;background:#6F5FE5;color:#fff;">YTD</button>
+      style="font-size:11px;font-weight:600;padding:5px 14px;border:none;border-radius:4px;cursor:pointer;font-family:inherit;background:#6F5FE5;color:#fff;">YTD</button>
     <button id="btn-5y" onclick="gasToggle('5y')"
-      style="font-size:11px;font-weight:600;padding:5px 14px;border:none;border-radius:4px;cursor:pointer;background:#e8e8e8;color:#555;">5Y</button>
+      style="font-size:11px;font-weight:600;padding:5px 14px;border:none;border-radius:4px;cursor:pointer;font-family:inherit;background:#e8e8e8;color:#555;">5Y</button>
     <span style="font-size:11px;color:#aaa;margin-left:6px;">Dutch TTF &middot; EUR/MWh</span>
   </div>
-  <div id="gas-chart" style="flex:1;width:100%;min-height:0;"></div>
+  <div id="gas-chart"></div>
 </div>
 <script>
 (function(){
@@ -53,23 +49,27 @@ body {
     animation:false,
     grid:{left:'5%',right:'3%',top:'6%',bottom:'8%',containLabel:true},
     tooltip:{trigger:'axis',axisPointer:{type:'line',lineStyle:{color:'rgba(111,95,229,0.35)',width:1}},
-      formatter:function(p){var d=new Date(p[0].value[0]);var mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return d.getDate()+' '+mon[d.getMonth()]+' '+d.getFullYear()+'<br/><b>'+p[0].value[1].toFixed(1)+' EUR/MWh</b>';}},
+      formatter:function(p){var d=new Date(p[0].value[0]);var mon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        return d.getDate()+' '+mon[d.getMonth()]+' '+d.getFullYear()+'<br/><b>'+p[0].value[1].toFixed(1)+' EUR/MWh</b>';}},
     xAxis:{type:'time',boundaryGap:false,axisLabel:{fontSize:11,color:'#666'},axisLine:{lineStyle:{color:'#ddd'}},splitLine:{show:false}},
-    yAxis:{type:'value',name:'EUR/MWh',nameLocation:'end',nameTextStyle:{fontSize:10,color:'#aaa'},axisLabel:{fontSize:11,color:'#666',formatter:function(v){return v.toFixed(0);}},splitLine:{lineStyle:{type:'dashed',color:'#eeeeee'}}},
+    yAxis:{type:'value',name:'EUR/MWh',nameLocation:'end',nameTextStyle:{fontSize:10,color:'#aaa'},
+      axisLabel:{fontSize:11,color:'#666',formatter:function(v){return v.toFixed(0);}},
+      splitLine:{lineStyle:{type:'dashed',color:'#eeeeee'}}},
     dataZoom:[{type:'inside',filterMode:'filter'}],
-    series:[{type:'line',data:data,symbol:'none',lineStyle:{color:'#6F5FE5',width:2},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(111,95,229,0.18)'},{offset:1,color:'rgba(111,95,229,0.01)'}]}}}]
+    series:[{type:'line',data:data,symbol:'none',lineStyle:{color:'#6F5FE5',width:2},
+      areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,
+        colorStops:[{offset:0,color:'rgba(111,95,229,0.18)'},{offset:1,color:'rgba(111,95,229,0.01)'}]}}}]
   });
   window.gasToggle=function(mode){
     var yb=document.getElementById('btn-ytd'),fb=document.getElementById('btn-5y');
-    if(mode==='ytd'){chart.dispatchAction({type:'dataZoom',dataZoomIndex:0,startValue:new Date(new Date().getFullYear(),0,1).getTime()});yb.style.background='#6F5FE5';yb.style.color='#fff';fb.style.background='#e8e8e8';fb.style.color='#555';}
-    else{chart.dispatchAction({type:'dataZoom',dataZoomIndex:0,start:0,end:100});fb.style.background='#6F5FE5';fb.style.color='#fff';yb.style.background='#e8e8e8';yb.style.color='#555';}
+    if(mode==='ytd'){chart.dispatchAction({type:'dataZoom',dataZoomIndex:0,startValue:new Date(new Date().getFullYear(),0,1).getTime()});
+      yb.style.background='#6F5FE5';yb.style.color='#fff';fb.style.background='#e8e8e8';fb.style.color='#555';}
+    else{chart.dispatchAction({type:'dataZoom',dataZoomIndex:0,start:0,end:100});
+      fb.style.background='#6F5FE5';fb.style.color='#fff';yb.style.background='#e8e8e8';yb.style.color='#555';}
   };
   chart.resize();
   setTimeout(function(){chart.resize();gasToggle('ytd');},150);
   window.addEventListener('resize',function(){chart.resize();});
 })();
-</script></div>
-    <div class="modo-branding">Generated by <a href="https://modoenergy.com">Modo Energy</a></div>
-  </div>
-</body>
+</script></body>
 </html>
